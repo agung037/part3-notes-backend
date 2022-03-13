@@ -1,0 +1,19 @@
+### get all available notes
+GET http://localhost:3001/api/notes
+
+
+### find specific note
+GET http://localhost:3001/api/notes/622cc0650dfce77bba391073
+
+
+### delete specific note
+DELETE http://localhost:3001/api/notes/622d8eb45caa8c4f6d58182d
+
+### add new notes
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content": "yale is very good university to learn about law",
+    "important": true
+}
