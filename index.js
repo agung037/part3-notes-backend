@@ -4,6 +4,7 @@ const cors = require('cors')
 
 const app = express()
 const Note = require('./models/note')
+const res = require('express/lib/response')
 
 app.use(cors())
 app.use(express.json())
@@ -44,26 +45,65 @@ app.post('/api/notes', (request, response) => {
 })
 
 // Query specific notes by id
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response, next) => {
   // findById is method from mongoose
-  Note.findById(request.params.id).then(note => {
-    response.json(note)
+  Note.findById(request.params.id)
+    .then(note => {
+    // jika ditemukan maka krim response
+    if(note){
+      response.json(note)
+    }else{
+      // jika tidak maka berikan error 404
+      response.status(404).end()
+    }
   })
+  .catch(error => next(error))
+
+})
+
+
+// Update specific note
+app.put('/api/notes/:id', (request, response, next) => {
+
+  const body = request.body
+  const note = {
+    content: body.content,
+    important: body.important,
+  }
+
+  Note.findByIdAndUpdate(request.params.id, note, {new: true})
+  .then(updatedNote => {
+    response.json(updatedNote)
+  })
+  .catch(error => next(error))
 })
 
 
 // Deleting specific notes by id
-app.delete('/api/notes/:id', (request, response) => {
+app.delete('/api/notes/:id', (request, response, next) => {
 
-  // menemukan notes yang ingin dihapus berdasarkan id
-  Note.findById(request.params.id).then(note => {
-    // setelah ketemu, hapus post tersebut
-    note.remove() 
-    // tampilkan hasilnya
-    response.json({"report" : `note with id ${request.params.id} deleted !`})
-  })
+  Note.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
+
 })
 
+
+// error handler ala express yang selalu diletakan di bawah semua route
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if(error.name === 'CastError'){
+    return response.status(400).send({error: 'malformated id'})
+  }
+
+  next(error)
+}
+
+
+app.use(errorHandler)
 
 // runing server
 const PORT = process.env.PORT || 3001
