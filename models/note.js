@@ -5,7 +5,7 @@ console.log("connecting to ", url)
 
 mongoose.connect(url)
     .then(result => {
-        console.log('connected to mongo db')
+        console.log('connected to mongo db!')
     })
     .catch((error) => {
         console.log('error connect to mongoDB:', error.message)
@@ -17,6 +17,8 @@ const noteSchema = new mongoose.Schema({
     important: Boolean,
 })
 
+
+// untuk menghapus field __v dan mengubah nama field _id menjadi id
 noteSchema.set('toJSON', {
     transform: (document, returnedObject) => {
       returnedObject.id = returnedObject._id.toString()
