@@ -12,15 +12,15 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content": "Findland is country with the best education",
+    "content": "apple is the best company",
     "important": true
 }
 
 ### update notes
-PUT http://localhost:3001/api/notes/622e0bf14f0841ad3ac375a5
+PUT http://localhost:3001/api/notes/622d9029e4975892b7ac0f61
 Content-Type: application/json
 
 {
-    "content": "Biawak adalah nama hewan",
+    "content": "Postman is not Bekman",
     "important": false
 }

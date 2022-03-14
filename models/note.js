@@ -11,9 +11,18 @@ mongoose.connect(url)
         console.log('error connect to mongoDB:', error.message)
     })
 
+// kamu bisa menambahkan validasi pada schema
+// fitur ini tersedia pada mongoose
 const noteSchema = new mongoose.Schema({
-    content: String,
-    date: Date,
+    content: {
+        type: String,
+        minlength: 5,
+        required: true
+    },
+    date: {
+        type: String,
+        required: true
+    },
     important: Boolean,
 })
 
