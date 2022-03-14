@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 
+
 const app = express()
 const Note = require('./models/note')
 const res = require('express/lib/response')
